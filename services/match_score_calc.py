@@ -65,7 +65,7 @@ class MatchScoreCalculationService:
         self._current_set['tiebreak'] = True
 
     def _is_finished_game(self):
-        if self._current_set['tiebreak']:
+        if self._current_set.get('tiebreak'):
             return False
         p1, p2 = self._current_set['p1_gm_score'], self._current_set['p1_gm_score']
 
@@ -77,7 +77,7 @@ class MatchScoreCalculationService:
 
     def _is_deuce_condition(self):
         curr_set = self._current_set
-        if curr_set['p1_gm_score'] == curr_set['p1_gm_score'] == 3 and not curr_set['tiebreak']:
+        if curr_set['p1_gm_score'] == curr_set['p1_gm_score'] >= 3 and not curr_set.get('tiebreak'):
             return True
 
     def _is_finished_set(self):
@@ -85,7 +85,7 @@ class MatchScoreCalculationService:
         if p1w == p2w == 0:
             return False
 
-        if self._current_set['tiebreak']:
+        if self._current_set.get('tiebreak'):
             p1, p2 = self._current_set['p1_gm_score'], self._current_set['p2_gm_score']
             if abs(p1-p2) == 2 and (p1 >= 7 or p2 >= 7):
                 return True
