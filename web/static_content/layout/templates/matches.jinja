@@ -1,0 +1,98 @@
+{% from 'macros.jinja' import count_winner, construct_matches_page_link %}
+{% set ns = namespace(max_sets=0) %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="layout/templates/tennis-scoreboard.css">
+    <title>Tennis Matches</title>
+</head>
+<body class="main-content-holder scoreboard-text ts-primary-bg-color" style="max-height: 100vh">
+{% include 'nav.jinja' %}
+<div class="centering-flexbox" style="height: auto">
+    <div class="centering-flexbox" style="width: 60vw; flex-direction: column">
+        <h1 class="centering-flexbox ts-txt-on-light-bg-color" style="font-weight: bold; font-size: 3rem; margin-top: 30px">Matches</h1>
+        <div class="centering-flexbox" style="margin-top: 10px; flex-direction: column">
+            <form action="/matches" class="ts-input ts-txt-on-light-bg-color" id="matches-search-params" style="text-align: center">
+                <h2>Search matches</h2>
+{#                <input type="text" id="player-name-filter" name="player_name_filter" placeholder="Enter player name">#}
+                <select id="player-name-filter" name="player_name_filter">
+                    <option value="" {{ 'selected' if selected }}>All</option>
+                    {% for player_name in matches.players_names %}
+                    {% set selected = player_name|replace(' ', '+') in request.QUERY_STRING %}
+                    <option value="{{ player_name }}" {{ 'selected' if selected }}>{{ player_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Search" class="ts-button ts-txt-on-dark-bg-color borderless"><br>
+                <label for="finished-matches-chckbx">Only finished matches</label>
+                <input type="checkbox" id="finished-matches-chckbx" name="finished" value="show"><br>
+                <label for="ongoing-matches-chckbx">Only ongoing matches</label>
+                <input type="checkbox" id="ongoing-matches-chckbx" name="ongoing" value="show"><br>
+            </form>
+        {% if matches.data %}
+        </div>
+        <table class="matches-table ts-txt-on-light-bg-color" style="margin-top: 20px">
+            {% for match in matches.data %}
+            {% set score = match.match_score %}
+            {% if score.metadata.n_sets > ns.max_sets %} {% set ns.max_sets = score.metadata.n_sets %} {% endif %}
+            <tr>
+                <td class="matches-table-winner-ind-cell">
+                    {% if score.winner == 1 -%}&#11088<br>&nbsp;
+                    {% elif score.winner == 2 -%}&nbsp;<br>&#11088
+                    {% endif %}
+                </td>
+
+{#                {% set field_length = [match.player1.name, match.player2.name]|max|length + 2 %}#}
+{#                {% set p1_name = '&#11088 ' ~ match.player1.name if score.winner == 1 else match.player1.name %}#}
+{#                {% set p2_name = '&#11088 ' ~ match.player2.name if score.winner == 2 else match.player2.name %}#}
+                <td class="matches-table-player-name-cell">
+                    {{ match.player1.name }}<br>{{ match.player2.name }}
+                </td>
+                {% for set in score.sets %}
+                <td class="matches-table-score-cell">{{ count_winner(set.games, 1) }}<br>{{ count_winner(set.games, 2) }}</td>
+                {% endfor %}
+                {% if not match.winner %}
+                {% set empty_cells = ns.max_sets-score.sets|length-1 %}
+                <td class="matches-table-score-cell">{{ count_winner(score.current_set.games, 1) }}<br>{{ count_winner(score.current_set.games, 2) }}</td>
+                {% else %}
+                {% set empty_cells = ns.max_sets-score.sets|length %}
+                {% endif %}
+                {% for i in range(empty_cells) %}
+                <td class="matches-table-score-cell"> </td>
+                {% endfor %}
+                <td class="matches-table-state-cell"><i>{{ 'finished' if score.winner else 'ongoing' }}</i></td>
+                <td><a href="{{ '/match_score?uuid=' ~ match.match_id.hex }}">Jump to</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="centering-flexbox" style="flex-direction: row; margin-top: 30px; height: 30px">
+            {% if matches.active_page == 1 %}
+            <div class="page-button">&lt&lt</div>
+            {% else %}
+               {% autoescape false %}
+            <a class="page-button" href="{{ construct_matches_page_link(pages_link_prefix, matches.active_page - 1) }}">&lt&lt</a>
+            {% endautoescape %}
+            {% endif %}
+            {% for page in matches.pages %}
+            {% set cur_page = loop.index == matches.active_page %}
+            {% set href = construct_matches_page_link(pages_link_prefix, loop.index)  %}
+            <a class="page-button {{ 'page-button-current' if cur_page }}" {{ 'href=' ~ href if not cur_page }}>
+                {{ loop.index }}
+            </a>
+            {% endfor %}
+            {% if matches.active_page == matches.pages|length %}
+            <div class="page-button">&gt&gt</div>
+            {% else %}
+            {% autoescape false %}
+                <a class="page-button" href="{{ construct_matches_page_link(pages_link_prefix, matches.active_page + 1) }}">&gt&gt</a>
+            {% endautoescape %}
+            {% endif %}
+        </div>
+        {% else %}
+        <div style="color: slategray; margin-top: 30px">No matches found</div>
+        {% endif %}
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="layout/templates/tennis-scoreboard.css">
+    <title>Tennis Scoreboard - New Match</title>
+</head>
+<body class="main-content-holder ts-primary-bg-color">
+{% include 'nav.jinja' %}
+<div class="centering-flexbox" style="flex-direction: column; margin-top: 50px">
+    <h1 class="scoreboard-text ts-txt-on-light-bg-color">New Match</h1>
+    <form action="/new_match" class="ts-input scoreboard-text ts-txt-on-light-bg-color" method="post">
+        <label class="ts-input" for="pl1_name_input" style="font-size: 1.5rem; width: 70px">Player 1</label><br>
+        <input
+                type="text" placeholder="Player name" id="pl1_name_input" name="player1_name" pattern=" ?\w+ ?"
+                maxlength="25"
+        >
+        <br>
+        <label class="ts-input" for="pl2_name_input" style="font-size: 1.5rem">Player 2</label><br>
+        <input
+                type="text" placeholder="Player name" id="pl2_name_input" name="player2_name" pattern=" ?\w+ ?"
+                maxlength="25"
+        >
+        <br>
+        <input type="submit" value="Create match" class="ts-button borderless ts-txt-on-dark-bg-color scoreboard-text">
+        {% if response_data.get('amend_input') and 'name_len' in response_data.amend_input %}
+        <p class="scoreboard-text ts-txt-important" style="font-size: 1rem">Incorrect name length</p>
+        {% endif %}
+        <p class="scoreboard-text ts-txt-important" style="font-size: 1rem">
+            *Valid player name consists of alphabet characters, digits and underscores. Max name length is 25 characters.
+        </p>
+    </form>
+    <br>
+
+</div>
+</body>
+</html>

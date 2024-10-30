@@ -1,0 +1,259 @@
+nav {
+    width: 100%;
+    height: 56px;
+    /*background-color: rgba(44, 51, 51, 1);*/
+    background-color: rgb(0, 103, 105);
+    /*border-radius: 0px 0px 20px 20px;*/
+}
+
+.nav-item {
+    display: inline-flex;
+    box-sizing: border-box;
+    min-width: 50px;
+    height: 100%;
+    padding: 0px 10px;
+    justify-content: center;
+    color: inherit;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: normal;
+    /*border-radius: inherit*/
+}
+
+h1 {
+    font-size: 3rem !important;
+}
+
+h2 {
+    font-size: 1.5rem !important;
+}
+
+.nav-item:hover {
+    background-color: rgba(145, 136, 132, 1)
+}
+
+.main-content-holder {
+    max-width: 100vw;
+    height: 100vh
+}
+
+.centering-flexbox {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.scoreboard-itself {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 25%;
+    /*border: 4px solid black;*/
+    border-radius: 20px;
+}
+
+.scoreboard-text {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.set-winner-highlighting {
+    color: rgb(235, 131, 23)
+}
+
+.ts-primary-bg-color {
+    background-color: rgba(238, 247, 255, 1);
+}
+
+.ts-scoreboard-bg-color {
+    /*background-color: rgba(165, 201, 202, 1)*/
+    background-color: rgb(0, 103, 105)
+}
+
+.ts-txt-on-dark-bg-color {
+    /*color: rgb(231, 246, 242)*/
+    color: rgb(230, 255, 148)
+}
+
+.ts-txt-on-light-bg-color {
+    /*color: rgba(44, 51, 51, 1);*/
+    color: rgb(57, 91, 100);
+}
+
+.ts-txt-important {
+    color: red;
+    font-style: italic;
+}
+
+.player-score-row {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.player-name-cell {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.serve-indicator-cell {
+    display: flex;
+    width: 10%;
+    height: 100%;
+    align-items: center;
+    border-right: solid 15px white
+}
+
+.serve-indicator-cell img {
+    width: auto;
+    height: 20%;
+}
+
+.score-cell {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.cur-game-score-cell {
+    width: 40%;
+    height: 40%;
+    color: black;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+#point-adder-appendix {
+    display: inline-flex;
+    flex-direction: column;
+    height: 25%;
+    padding: 0px 10px
+}
+
+#point-adder-appendix div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+}
+
+.ts-input label {
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: center
+}
+
+form.ts-input {
+    width: 300px
+}
+
+.ts-input input[type="text"] {
+    height: 35px;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    margin: 15px 0px;
+}
+
+.matches-table-winner-ind-cell {
+
+}
+
+.matches-table-player-name-cell {
+    text-align: left !important;
+}
+
+.matches-table-state-cell {
+    width: 25%
+}
+
+.matches-table-score-cell {
+    width: 5%
+}
+
+.matches-table {
+    width: 800px;
+    font-weight: normal;
+    font-size: 1.5rem;
+    border-collapse: collapse
+}
+
+.matches-table td {
+    text-align: center;
+    padding: 15px 0px;
+}
+
+.matches-table tr {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+}
+
+a.link-table-row {
+    display: table-row;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+}
+
+.matches-table tr:hover  {
+    background-color: rgba(109, 112, 117, 0.1)
+}
+
+.page-button {
+    width: 10%;
+    height: 100%;
+    font-size: 0.8rem;
+    text-align: center
+}
+
+.page-button:hover {
+    background-color: rgba(109, 112, 117, 0.1)
+}
+
+.page-button:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.page-button:active {
+    text-decoration: underline;
+    color: inherit
+}
+
+.page-button-current {
+    background-color: rgba(109, 112, 117, 0.1);
+}
+
+.page-button-current:link {
+    text-decoration: underline;
+}
+
+.unmarked-link:link, .unmarked-link:visited, .unmarked-link:active {
+    text-decoration: none;
+}
+
+.borderless {
+    border: none;
+}
+
+.ts-button {
+    background-color: rgb(0, 103, 105);
+    border-radius: 5px;
+    font-weight: normal;
+    height: 30px
+}
+
+.ts-button:hover {
+    cursor: pointer;
+}
+

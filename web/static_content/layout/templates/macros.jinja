@@ -1,0 +1,24 @@
+{% macro process_current_score(points, opponent_point, tiebreak) %}
+        {% if tiebreak is true %}
+            {{ points }}
+        {% else %}
+            {% if points is eq(0) -%} 0
+            {% elif points is eq(1) -%} 15
+            {% elif points is eq(2) -%} 30
+            {% elif points is eq(3) -%} 40
+            {% elif points is le(opponent_point) -%} 40
+            {% else -%} AD
+            {% endif %}
+        {% endif -%}
+    {% endmacro %}
+    {% include 'nav.jinja' %}
+
+{% macro count_winner(lst, player) %}
+    {{ lst|map(attribute='winner')|select('eq', player)|list|length }}
+{% endmacro %}
+
+{% macro construct_matches_page_link(prefix, page_no) %}
+    {% autoescape false %}
+    {{ prefix ~ 'page=' ~ page_no|string }}
+    {% endautoescape %}
+{% endmacro %}
