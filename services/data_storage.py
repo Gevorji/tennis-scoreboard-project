@@ -4,7 +4,7 @@ from typing import Collection, List
 
 from jinja2.nodes import Tuple
 from sqlalchemy import create_engine, URL, select, delete, or_, update, bindparam, literal_column
-from sqlalchemy.orm import Session, DeclarativeBase, ColumnProperty, aliased
+from sqlalchemy.orm import aliased, sessionmaker, selectinload
 from sqlalchemy import func as safunc
 
 from models import Player, Match
@@ -24,53 +24,70 @@ class DataStorageService:
             database=os.getenv('DB_DB_NAME'),
         )
         self._sa_engine = create_engine(connection_url.render_as_string(hide_password=False), echo=sql_echo)
-        self._sa_session = Session(self._sa_engine)
+        self._sessionmaker = sessionmaker(self._sa_engine, expire_on_commit=False)
 
     def commit(self):  # ensures that commit statement is emitted
         self._sa_session.commit()
 
     def get_player_by_name(self, name: str):
-        return self._sa_session.execute(select(Player).where(Player.name == name)).scalars().one_or_none()
+        with self._sessionmaker() as session:
+            return session.execute(select(Player).where(Player.name == name)).scalars().one_or_none()
 
     def get_matches_by_player_name(self, name: str):
         p1, p2 = aliased(Player), aliased(Player)
-        return self._sa_session.execute(
-            select(Match)
-            .join(p1, Match.player1)
-            .join(p2, Match.player2)
-            .where(or_(p1.name == name, p2.name == name))
-        ).scalars().all()
+        with self._sessionmaker() as session:
+            return session.execute(
+                select(Match)
+                .join(p1, Match.player1)
+                .join(p2, Match.player2)
+                .where(or_(p1.name == name, p2.name == name))
+            ).scalars().all()
 
     def get_match_by_uuid(self, _uuid: uuid.UUID):
-        return self._sa_session.execute(select(Match).where(Match.match_id == _uuid)).scalars().one_or_none()
+        with self._sessionmaker() as session:
+            return session.execute(select(Match)
+                                   .options(
+                selectinload(Match.player1), selectinload(Match.player2), selectinload(Match.winner)
+            )
+                                   .where(Match.match_id == _uuid)).scalars().one_or_none()
 
     def get_all_players(self):
-        return self._sa_session.execute(select(Player)).scalars().all()
+        with self._sessionmaker() as session:
+            return session.execute(select(Player)).scalars().all()
 
     def get_all_matches(self):
-        return self._sa_session.execute(select(Match)).scalars().all()
+        with self._sessionmaker() as session:
+            return session.execute(
+                select(Match)
+                .options(selectinload(Match.player1), selectinload(Match.player2), selectinload(Match.winner))
+            ).scalars().all()
 
     def get_all_players_names(self):
-        return self._sa_session.execute(select(Player.name)).scalars().all()
+        with self._sessionmaker() as session:
+            return session.execute(select(Player.name)).scalars().all()
 
     def put_match(self, match: Match):
-        self._execute_with_autocommit(self._sa_session.add, match)
+        with self._sessionmaker.begin() as session:
+            session.add(match)
 
     def put_player(self, player: Player):
-        self._execute_with_autocommit(self._sa_session.add, player)
+        with self._sessionmaker.begin() as session:
+            session.add(player)
 
     def delete_match(self, match_uuid: uuid.UUID):
-        self._execute_with_autocommit(self._sa_session.execute, delete(Match).where(Match.match_id == match_uuid))
+        with self._sessionmaker.begin() as session:
+            session.execute(delete(Match).where(Match.match_id == match_uuid))
 
     def delete_player(self, player_id: int):
-        self._execute_with_autocommit(self._sa_session.execute, delete(Player).where(Player.player_id == player_id))
+        with self._sessionmaker.begin() as session:
+            session.execute(delete(Player).where(Player.player_id == player_id))
 
     def update_match_score(self, match_id: uuid.UUID, score: dict):
-        self._execute_with_autocommit(
-            self._sa_session.execute,
-            update(Match).where(Match.match_id == bindparam('id')).values(match_score=score),
-            {'id': match_id}
-        )
+        with self._sessionmaker.begin() as session:
+            session.execute(
+                update(Match).where(Match.match_id == bindparam('id')).values(match_score=score),
+                {'id': match_id}
+            )
 
     def count_matches(self, player_name_filter: str = None, *, finished: bool = False, ongoing=False):
 
@@ -87,7 +104,8 @@ class DataStorageService:
             if ongoing:
                 stmt = stmt.where(Match.winner == None)
 
-        return self._sa_session.execute(stmt).scalar_one()
+        with self._sessionmaker() as session:
+            return session.execute(stmt).scalar_one()
 
     def get_matches_in_creation_ord(
             self, player_name_filter: str | Collection = None,
@@ -120,29 +138,18 @@ class DataStorageService:
         cte = stmt.cte()
         cte = aliased(Match, cte)
 
-        stmt = select(literal_column('no'), Match).join_from(Match, cte, Match.match_id == cte.match_id)
+        stmt = select(literal_column('no'), Match)\
+            .options(selectinload(Match.player1), selectinload(Match.player2), selectinload(Match.winner))\
+            .join_from(Match, cte, Match.match_id == cte.match_id)
 
         if bot_boundary:
             stmt = stmt.where(literal_column('no') >= bindparam('bb'))
         if top_boundary:
             stmt = stmt.where(literal_column('no') <= bindparam('tb'))
-        res = self._sa_session.execute(stmt, {'bb': bot_boundary, 'tb': top_boundary}).fetchall()
+
+        with self._sessionmaker() as session:
+            res = session.execute(stmt, {'bb': bot_boundary, 'tb': top_boundary}).fetchall()
 
         if enumed:
             return res
         return [row[1] for row in res]
-
-    def _execute_with_autocommit(self, func, *args, **kwargs):
-        try:
-            res = func(*args, **kwargs)
-        except:
-            self._sa_session.rollback()
-            raise
-        self._sa_session.commit()
-        return res
-
-    def _orm_obj_as_dict(self, obj: DeclarativeBase):
-        attrs = obj.__mapper__.attrs
-        return {
-            k.key: getattr(obj, k.key) for k in attrs if isinstance(getattr(attrs, k.key), ColumnProperty)
-        }
