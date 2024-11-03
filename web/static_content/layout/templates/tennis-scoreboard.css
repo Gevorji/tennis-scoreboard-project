@@ -30,7 +30,7 @@ h2 {
 }
 
 .nav-item:hover {
-    background-color: rgba(145, 136, 132, 1)
+    background-color: rgba(2, 60, 61, 1)
 }
 
 .main-content-holder {
@@ -256,4 +256,3 @@ a.link-table-row {
 .ts-button:hover {
     cursor: pointer;
 }
-
