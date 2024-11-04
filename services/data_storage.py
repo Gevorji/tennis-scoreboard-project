@@ -26,9 +26,6 @@ class DataStorageService:
         self._sa_engine = create_engine(connection_url.render_as_string(hide_password=False), echo=sql_echo)
         self._sessionmaker = sessionmaker(self._sa_engine, expire_on_commit=False)
 
-    def commit(self):  # ensures that commit statement is emitted
-        self._sa_session.commit()
-
     def get_player_by_name(self, name: str):
         with self._sessionmaker() as session:
             return session.execute(select(Player).where(Player.name == name)).scalars().one_or_none()
