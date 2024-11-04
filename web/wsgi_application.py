@@ -98,7 +98,7 @@ class MatchScoreHandler(TennisScoreboardWsgiApp):
 
         if match.match_score.get('winner'):
             match.winner_id = {1: match.player1_id, 2: match.player2_id}[match.match_score['winner']]
-            services.DataStorageService.commit()
+            services.DataStorageService.put_match(match)
 
         start_response(HTTPStatus.OK, ())
         yield match
