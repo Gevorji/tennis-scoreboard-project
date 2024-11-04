@@ -68,11 +68,11 @@ class DataStorageService:
 
     def put_match(self, match: Match):
         with self._sessionmaker.begin() as session:
-            session.add(match)
+            session.merge(match)
 
     def put_player(self, player: Player):
         with self._sessionmaker.begin() as session:
-            session.add(player)
+            session.merge(player)
 
     def delete_match(self, match_uuid: uuid.UUID):
         with self._sessionmaker.begin() as session:
@@ -153,3 +153,4 @@ class DataStorageService:
         if enumed:
             return res
         return [row[1] for row in res]
+
