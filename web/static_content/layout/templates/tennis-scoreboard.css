@@ -74,6 +74,10 @@ h2 {
     background-color: rgb(0, 103, 105)
 }
 
+.ts-tbreak-capture-bg-color {
+    background-color: rgb(255, 183, 43);
+}
+
 .ts-txt-on-dark-bg-color {
     /*color: rgb(231, 246, 242)*/
     color: rgb(230, 255, 148)
@@ -131,6 +135,11 @@ h2 {
     align-items: center
 }
 
+.ts-tbreak-capture {
+    border-radius: 10px;
+    padding: 3px;
+    text-align: center;
+}
 #point-adder-appendix {
     display: inline-flex;
     flex-direction: column;
