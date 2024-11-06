@@ -12,6 +12,23 @@
     <div class="main-content-holder">
         <div class="centering-flexbox">
             <table class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2rem">
+                <tr class="ts-scoreboard-header-row">
+                    <td class="player-name-cell ts-scoreboard-header"></td>
+                    <td class="serve-indicator-cell"></td>
+                    <td class="score-cell">Sets</td>
+                    <td class="score-cell">Games</td>
+                    {% if score.current_set.get('tiebreak') %}
+                    <td class="score-cell">
+                        <div class="centering-flexbox">
+                            <div class="ts-tbreak-capture ts-tbreak-capture-bg-color ts-txt-tbreak-capture-color">
+                                Tiebreak
+                            </div>
+                        </div>
+                    </td>
+                    {% else %}
+                    <td class="score-cell">Current</td>
+                    {% endif %}
+                </tr>
                 <tr class="player-score-row">
                     <td class="player-name-cell">
                         {{ p1_name }}
