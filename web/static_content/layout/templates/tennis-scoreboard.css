@@ -270,3 +270,61 @@ a.link-table-row {
 .ts-button:hover {
     cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+    .scoreboard-itself, #point-adder-appendix {
+        height: 150px;
+    }
+    .ts-scoreboard-header {
+        padding: 15px;
+    }
+    nav {
+        height: 36px
+    }
+    .player-name-cell {
+        padding: 5px;
+    }
+    .ts-button {
+        height: 30px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    html {
+        font-size: 5px;
+    }
+
+    .scoreboard-itself, #point-adder-appendix {
+        height: 100px;
+        border-radius: 15px;
+    }
+
+    .ts-scoreboard-header-row {
+        height: 25px;
+    }
+
+    .ts-scoreboard-header {
+        padding: 5px;
+    }
+
+    #point-adder-appendix input[type=submit] {
+        margin: 4px;
+    }
+
+    .ts-button {
+        height: 20px;
+    }
+
+    nav {
+        height: 25px
+    }
+}
