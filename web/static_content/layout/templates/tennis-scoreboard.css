@@ -150,18 +150,15 @@ h2 {
     padding: 3px;
     text-align: center;
 }
+
 #point-adder-appendix {
-    display: inline-flex;
-    flex-direction: column;
-    height: 25%;
+    height: 250px;
     padding: 0px 10px
 }
 
-#point-adder-appendix div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
+#point-adder-appendix input[type="submit"] {
+    margin: 10px 0px;
+    font-size: 1.5rem;
 }
 
 .ts-input label {
