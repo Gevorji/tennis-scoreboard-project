@@ -8,29 +8,38 @@
 <body class="main-content-holder">
     {% include 'nav.jinja' %}
     <div class="centering-flexbox" style="flex-direction: column">
-        <div class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2em">
-            <div class="player-score-row">
-                <div class="player-name-cell">{{ p1_name }}</div>
-                <div class="serve-indicator-cell">
-                </div>
-                {% for _set in score.sets %}
-                <div class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(1) }}">
-                    {{ _set.games|map(attribute='winner')|select('eq', 1)|list|length }}
-                </div>
-                {% endfor %}
-            </div>
-            <div class="player-score-row">
-                <div class="player-name-cell">{{ p2_name }}</div>
-                <div class="serve-indicator-cell">
-                </div>
-                {% for _set in score.sets %}
-                <div class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(2) }}">
+        <table class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2rem">
+                <tr style="font-size: 1.5rem">
+                    <td class="player-name-cell" style="padding: 30px 0px"></td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                        <td class="score-cell">Set {{ loop.index }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p1_name }}
+                    </td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                    <td class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(1) }}">
+                        {{ _set.games|map(attribute='winner')|select('eq', 1)|list|length }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p2_name }}
+                    </td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                    <td class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(2) }}">
                     {{ _set.games|map(attribute='winner')|select('eq', 2)|list|length }}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="scoreboard-text" style="margin-top: 15px; text-align:center">
+                    </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        <div class="scoreboard-text ts-txt-on-light-bg-color" style="margin-top: 15px; text-align:center">
             Congratulations to {{ winner }}!&#127870&#128170&#x1F3C6
         </div>
 
