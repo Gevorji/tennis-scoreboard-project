@@ -33,20 +33,22 @@ def html_match_score(request_data: dict, match: Match):
     winner = match.match_score['winner']
     if not winner:
         tmpl = env.get_template('match-score.jinja')
-        winner = None
     else:
         tmpl = env.get_template('winner-page.jinja')
         winner = {1: match.player1.name, 2: match.player2.name}[winner]
-    return tmpl.render(
+    response_data = dict(
         score=match.match_score, match_id=str(match.match_id),
         p1_name=match.player1.name, p2_name=match.player2.name,
         winner=winner
     )
+    return tmpl.render(
+        request_data=request_data, response_data=response_data
+    )
 
 
-def html_error_page(request_data: dict, msg):
+def html_error_page(request_data: dict, response_data: dict):
     tmpl = env.get_template('error-page.jinja')
-    return tmpl.render(msg=msg[0], code=http_status_enum_to_string(msg[1]))
+    return tmpl.render(request_data=request_data, response_data=response_data)
 
 
 def html_matches_page(request_data: dict, matches):
@@ -56,17 +58,21 @@ def html_matches_page(request_data: dict, matches):
     pages_link_prefix = '/matches?' + urlencode({k: v[0] for k, v in query_components.items()})
     if len(query_components) != 0:
         pages_link_prefix += '&'
-    return tmpl.render(matches=matches, request=request_data, pages_link_prefix=pages_link_prefix)
+    response_data = dict(matches=matches, pages_link_prefix=pages_link_prefix)
+    return tmpl.render(request_data=request_data, response_data=response_data)
 
 
 def html_new_match(request_data: dict, data):
     tmpl = env.get_template('new_match.jinja')
-    return tmpl.render(response_data=data)
+    response_data = dict(data=data)
+    return tmpl.render(request_data=request_data, response_data=response_data)
 
 
 def html_index(request_data: dict, data):
     tmpl = env.get_template('index.jinja')
-    return tmpl.render()
+    response_data = dict(data=data)
+    return tmpl.render(request_data=request_data, response_data=response_data)
+
 
 views = {
     '/match_score': View(html_match_score, 'text/html'),

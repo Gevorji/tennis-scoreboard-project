@@ -9,6 +9,11 @@
 </head>
 <body class="ts-primary-bg-color">
     {% include 'nav.jinja' %}
+    {% set score = response_data['score'] %}
+    {% set match_id = response_data['match_id'] %}
+    {% set p1_name = response_data['p1_name'] %}
+    {% set p2_name = response_data['p2_name'] %}
+    {% set winner = response_data['winner'] %}
     <div class="main-content-holder">
         <div class="centering-flexbox">
             <table class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2rem">

@@ -9,6 +9,8 @@
 </head>
 <body class="main-content-holder scoreboard-text ts-primary-bg-color" style="max-height: 100vh">
 {% include 'nav.jinja' %}
+{% set matches = response_data.matches %}
+{% set pages_link_prefix = response_data.pages_link_prefix %}
 <div class="centering-flexbox" style="height: auto">
     <div class="centering-flexbox" style="width: 60vw; flex-direction: column">
         <h1 class="centering-flexbox ts-txt-on-light-bg-color" style="font-weight: bold; font-size: 3rem; margin-top: 30px">Matches</h1>
@@ -19,7 +21,7 @@
                 <select id="player-name-filter" name="player_name_filter">
                     <option value="" {{ 'selected' if selected }}>All</option>
                     {% for player_name in matches.players_names %}
-                    {% set selected = player_name|replace(' ', '+') in request.QUERY_STRING %}
+                    {% set selected = player_name|replace(' ', '+') in request_data.QUERY_STRING %}
                     <option value="{{ player_name }}" {{ 'selected' if selected }}>{{ player_name }}</option>
                     {% endfor %}
                 </select>
