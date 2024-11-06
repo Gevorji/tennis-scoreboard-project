@@ -47,12 +47,12 @@ h2 {
 }
 
 .scoreboard-itself {
-    display: flex;
-    flex-direction: column;
     width: 800px;
-    height: 25%;
+    height: 250px;
     /*border: 4px solid black;*/
     border-radius: 20px;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .scoreboard-text {
@@ -89,38 +89,36 @@ h2 {
     font-style: italic;
 }
 
+.ts-txt-tbreak-capture-color {
+    color: rgb(83, 62, 133);
+}
+
 .player-score-row {
     height: 50%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    box-sizing: border-box;
 }
 
 .player-name-cell {
-    width: 25%;
-    display: flex;
-    justify-content: center;
-    align-items: center
+    max-width: 30%;
+    padding: 10px;
+    text-align: center;
+    overflow-x: auto;
 }
 
 .serve-indicator-cell {
-    display: flex;
     width: 10%;
-    height: 100%;
     align-items: center;
     border-right: solid 15px white
 }
 
 .serve-indicator-cell img {
-    width: auto;
-    height: 20%;
+    max-width: 40%;
+    max-height: 40%;
 }
 
 .score-cell {
-    width: 33%;
-    display: flex;
-    justify-content: center;
-    align-items: center
+    width: 20%;
+    text-align: center;
 }
 
 .cur-game-score-cell {
