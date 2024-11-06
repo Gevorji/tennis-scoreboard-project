@@ -192,9 +192,11 @@ class NewMatchHandler(TennisScoreboardWsgiApp):
             if not p1:
                 p1 = services.PlayerInitializationService.create_new_player(p1_name)
                 services.DataStorageService.put_player(p1)
+                p1 = services.DataStorageService.get_player_by_name(p1.name)
             if not p2:
                 p2 = services.PlayerInitializationService.create_new_player(p2_name)
                 services.DataStorageService.put_player(p2)
+                p2 = services.DataStorageService.get_player_by_name(p2.name)
         except services.errors.ApplicationError as e:
             raise ResponseProcessingError(HTTPStatus.BAD_REQUEST, e.args[0]) from e
 
