@@ -11,65 +11,66 @@
     {% include 'nav.jinja' %}
     <div class="main-content-holder">
         <div class="centering-flexbox">
-            <div class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2em">
-                <div class="player-score-row">
-                    <div class="player-name-cell">{{ p1_name }}</div>
-                    <div class="serve-indicator-cell">
+            <table class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2rem">
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p1_name }}
+                    </td>
+                    <td class="serve-indicator-cell">
                         {% if score.serve is eq(1) %}
-                        <img src="layout/sources/tennis.png">
+                            <div class="centering-flexbox"><img src="layout/sources/tennis.png"></div>
                         {% endif %}
-                    </div>
-                    <div class="score-cell">
-                        {{ count_winner(score.sets, 1) }}
-                    </div>
-                    <div class="score-cell">
-                        {{ count_winner(score.current_set.games, 1) }}
-                    </div>
-                    <div class="score-cell">
-                        <div class="cur-game-score-cell">
-                            {{ process_current_score(score.current_set.p1_gm_score, score.current_set.p2_gm_score, score.current_set.tiebreak) }}
+                    </td>
+                    <td class="score-cell">{{ count_winner(score.sets, 1) }}</td>
+                    <td class="score-cell">{{ count_winner(score.current_set.games, 1) }}</td>
+                    <td class="score-cell">
+                        <div class="centering-flexbox">
+                            <div class="cur-game-score-cell">
+                                {{ process_current_score(score.current_set.p1_gm_score, score.current_set.p2_gm_score, score.current_set.tiebreak) }}
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="player-score-row">
-                    <div class="player-name-cell">{{ p2_name }}</div>
-                    <div class="serve-indicator-cell">
+                    </td>
+                </tr>
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p2_name }}
+                    </td>
+                    <td class="serve-indicator-cell">
                         {% if score.serve is eq(2) %}
-                        <img src="layout/sources/tennis.png">
+                            <div class="centering-flexbox"><img src="layout/sources/tennis.png"></div>
                         {% endif %}
-                    </div>
-                    <div class="score-cell">
-                        {{ count_winner(score.sets, 2) }}
-                    </div>
-                    <div class="score-cell">
-                        {{ count_winner(score.current_set.games, 2) }}
-                    </div>
-                    <div class="score-cell">
-                        <div class="cur-game-score-cell">
-                            {{ process_current_score(score.current_set.p2_gm_score, score.current_set.p1_gm_score, score.current_set.tiebreak) }}
+                    </td>
+                    <td class="score-cell">{{ count_winner(score.sets, 2) }}</td>
+                    <td class="score-cell">{{ count_winner(score.current_set.games, 2) }}</td>
+                    <td class="score-cell">
+                        <div class="centering-flexbox">
+                            <div class="cur-game-score-cell">
+                                {{ process_current_score(score.current_set.p2_gm_score, score.current_set.p1_gm_score, score.current_set.tiebreak) }}
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    
-                </div>
-            </div>
-            <div id="point-adder-appendix" class="scoreboard-text" style="font-size: 1.5rem">
-                <div style="height: 50%">
-                    <form action={{ ['"/match_score?uuid=', match_id, '"']|join }} method="post">
-                        <input type="hidden" name="point_winner" value="1">
-                        <input type="submit" value="Player 1" class="ts-button ts-txt-on-dark-bg-color borderless">
-                    </form>
-                </div>
-                <div style="height: 50%">
-                    <form action={{ ['"/match_score?uuid=', match_id, '"']|join }} method="post">
-                        <input type="hidden" name="point_winner" value="2">
-                        <input type="submit" value="Player 2" class="ts-button ts-txt-on-dark-bg-color borderless">
-                    </form>
-                </div>
-            </div>
-        </div>
-
+                    </td>
+                </tr>
+            </table>
+            <table id="point-adder-appendix">
+                <tr class="ts-scoreboard-header-row"><td class="player-name-cell"></td></tr>
+                <tr class="player-score-row">
+                    <td class="score-cell">
+                        <form action={{ ['"/match_score?uuid=', match_id, '"']|join }} method="post">
+                            <input type="hidden" name="point_winner" value="1">
+                            <input type="submit" value="Add point" class="ts-button ts-txt-on-dark-bg-color borderless">
+                        </form>
+                    </td>
+                </tr>
+                <tr class="player-score-row">
+                    <td class="score-cell">
+                        <form action={{ ['"/match_score?uuid=', match_id, '"']|join }} method="post">
+                            <input type="hidden" name="point_winner" value="2">
+                            <input type="submit" value="Add point" class="ts-button ts-txt-on-dark-bg-color borderless">
+                        </form>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
     </div>
 
 </body>
