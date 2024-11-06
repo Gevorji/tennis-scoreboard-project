@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="layout/templates/tennis-scoreboard.css">
+    <title>Tennis Scoreboard Error</title>
+</head>
+<body class="main-content-holder scoreboard-text ts-primary-bg-color ts-txt-on-light-bg-color">
+{% include 'nav.jinja' %}
+{% set status = response_data.get('status') %}
+<div class="centering-flexbox" style="flex-direction: column; ; width: 100%">
+    <div style="font-size: 3.5em; margin-bottom: 20px">Hold on... There's an error occurred...</div>
+    <div style="font-size: 2em">{{ [status, status.phrase]|join(' ') }}</div>
+</div>
+</body>
+</html>

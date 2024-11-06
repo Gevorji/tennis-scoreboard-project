@@ -1,10 +1,12 @@
-from sqlalchemy.types import TypeDecorator, VARCHAR
 import json
+
+from sqlalchemy.types import TypeDecorator, TEXT
+from sqlalchemy.ext.mutable import MutableDict
 
 
 class JSONEncodedStruct(TypeDecorator):
 
-    impl = VARCHAR
+    impl = TEXT
 
     cache_ok = True
 

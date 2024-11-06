@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="layout/templates/tennis-scoreboard.css">
+    <title>Tennis Scoreboard Error</title>
+</head>
+<body class="main-content-holder">
+    {% include 'nav.jinja' %}
+    {% set score = response_data['score'] %}
+    {% set match_id = response_data['match_id'] %}
+    {% set p1_name = response_data['p1_name'] %}
+    {% set p2_name = response_data['p2_name'] %}
+    {% set winner = response_data['winner'] %}
+    <div class="centering-flexbox" style="flex-direction: column">
+        <table class="scoreboard-itself scoreboard-text ts-scoreboard-bg-color ts-txt-on-dark-bg-color" style="font-size: 2rem">
+                <tr style="font-size: 1.5rem">
+                    <td class="player-name-cell" style="padding: 30px 0px"></td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                        <td class="score-cell">Set {{ loop.index }}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p1_name }}
+                    </td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                    <td class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(1) }}">
+                        {{ _set.games|map(attribute='winner')|select('eq', 1)|list|length }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr class="player-score-row">
+                    <td class="player-name-cell">
+                        {{ p2_name }}
+                    </td>
+                    <td class="serve-indicator-cell"></td>
+                    {% for _set in score.sets %}
+                    <td class="score-cell {{ 'set-winner-highlighting' if _set.winner is eq(2) }}">
+                    {{ _set.games|map(attribute='winner')|select('eq', 2)|list|length }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        <div class="scoreboard-text ts-txt-on-light-bg-color" style="margin-top: 15px; text-align:center">
+            Congratulations to {{ winner }}!&#127870&#128170&#x1F3C6
+        </div>
+
+    </div>
+</body>
+</html>
