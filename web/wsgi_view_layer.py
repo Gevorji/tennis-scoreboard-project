@@ -22,7 +22,7 @@ class TennisScoreboardViewLayer(WSGIMiddleware):
             v = self._views.get_view(self.resp_ctxt.env['PATH_INFO'], 'text/html')
         else:
             v = self._views.get_view('error-page', 'text/html')
-            data = (data, status)
+            data = {'msg': data, 'status': status}
 
         return v.apply(self.resp_ctxt.env, data).encode()
 
