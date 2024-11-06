@@ -74,9 +74,6 @@ app = TennisScoreboardViewLayer(static_content_handler, view_holder)
 
 @core_app.at_route('/match_score', endpoint=True)
 class MatchScoreHandler(TennisScoreboardWsgiApp):
-    # TODO: add tiebreak and deuce indication to a score page
-    # TODO: add headers for sets, games, current score to a score page
-
     def doGET(self):
         start_response = self.resp_ctxt.own_start_response
         ident = self._extract_uuid()
@@ -111,7 +108,6 @@ class MatchScoreHandler(TennisScoreboardWsgiApp):
 
 @core_app.at_route('/matches', endpoint=True)
 class MatchesHandler(TennisScoreboardWsgiApp):
-    # TODO: make winner indication by laying out a start emoji to the left of winner name
     # TODO: make limit pages links layout (5-10 links)
 
     def doGET(self):
