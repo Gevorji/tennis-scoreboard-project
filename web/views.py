@@ -30,7 +30,6 @@ def http_status_enum_to_string(status: HTTPStatus):
 
 
 def html_match_score(request_data: dict, match: Match):
-    # TODO: make player names cells alignment (case when name length overextends container)
     winner = match.match_score['winner']
     if not winner:
         tmpl = env.get_template('match-score.jinja')
@@ -46,13 +45,11 @@ def html_match_score(request_data: dict, match: Match):
 
 
 def html_error_page(request_data: dict, msg):
-    # TODO: make more user-friendly reason message
     tmpl = env.get_template('error-page.jinja')
     return tmpl.render(msg=msg[0], code=http_status_enum_to_string(msg[1]))
 
 
 def html_matches_page(request_data: dict, matches):
-    # TODO: style 'Jump to' links
     tmpl = env.get_template('matches.jinja')
     qs = parse_qs(request_data.get('QUERY_STRING'))
     query_components = {k: v for k, v in qs.items() if k != 'page'}
@@ -63,7 +60,6 @@ def html_matches_page(request_data: dict, matches):
 
 
 def html_new_match(request_data: dict, data):
-    # TODO: style text input
     tmpl = env.get_template('new_match.jinja')
     return tmpl.render(response_data=data)
 
