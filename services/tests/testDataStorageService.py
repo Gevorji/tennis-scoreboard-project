@@ -67,7 +67,7 @@ class DataStorageTest(unittest.TestCase):
 
         self.assertIsNotNone(session.execute(
             select(Player)
-            .where(Player.player_id == new_player.player_id)
+            .where(Player.name == new_player.name)
         ).scalars().one_or_none())
 
         session.execute(delete(Player).where(Player.player_id == new_player.player_id))
