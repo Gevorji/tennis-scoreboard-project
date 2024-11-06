@@ -23,9 +23,6 @@
         >
         <br>
         <input type="submit" value="Create match" class="ts-button borderless ts-txt-on-dark-bg-color scoreboard-text">
-        {% if response_data.get('amend_input') and 'name_len' in response_data.amend_input %}
-        <p class="scoreboard-text ts-txt-important" style="font-size: 1rem">Incorrect name length</p>
-        {% endif %}
         <p class="scoreboard-text ts-txt-important" style="font-size: 1rem">
             *Valid player name consists of alphabet characters, digits and underscores. Max name length is 25 characters.
         </p>
