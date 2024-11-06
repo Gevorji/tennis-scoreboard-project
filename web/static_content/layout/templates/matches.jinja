@@ -63,7 +63,7 @@
                 <td class="matches-table-score-cell"> </td>
                 {% endfor %}
                 <td class="matches-table-state-cell"><i>{{ 'finished' if score.winner else 'ongoing' }}</i></td>
-                <td><a href="{{ '/match_score?uuid=' ~ match.match_id.hex }}">Jump to</a></td>
+                <td><a class="ts-txt-on-light-bg-color" href="{{ '/match_score?uuid=' ~ match.match_id.hex }}">Jump to</a></td>
             </tr>
             {% endfor %}
         </table>
